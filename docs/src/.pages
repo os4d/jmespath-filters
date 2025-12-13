@@ -1,0 +1,5 @@
+nav:
+  - Home: index.md
+  - Extras: extras
+  - contributing.md
+  - Examples: examples
