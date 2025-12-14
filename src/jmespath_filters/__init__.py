@@ -17,7 +17,7 @@ except ImportError:
 
 
 if typing.TYPE_CHECKING:
-    Rules = dict[str, list[str | dict] | str] | str
+    Rules = "str | dict[str, Expression] | Expression | list[Expression]"
     Payload = dict | str | None
 
 
@@ -29,17 +29,17 @@ class BaseExpression(ABC):
         if not rules:
             raise ValueError("Expression must be a non-empty string or dictionary")
         if isinstance(rules, dict):
-            if (key := list(rules.keys())[0]) not in ("AND", "OR", "NOT"):
+            key = list(rules.keys())[0]
+            if key not in ("AND", "OR", "NOT"):
                 raise ValueError(
                     f"Rule dictionary may only contain one key for the following list: AND, OR, NOT. Found '{key}'"
                 )
-            else:
-                if key in ("AND", "OR") and len(rules[key]) < 2:
-                    raise ValueError(f"{key} needs at least 2 expressions")
-                elif key == 'NOT' and not isinstance(rules[key], str) and len(rules[key]) != 1:
-                    raise ValueError("NOT needs 1 expression only")
+            if key in ("AND", "OR") and len(rules[key]) < 2:
+                raise ValueError(f"{key} needs at least 2 expressions")
+            if key == 'NOT' and not isinstance(rules[key], str) and len(rules[key]) != 1:
+                raise ValueError("NOT needs 1 expression only")
 
-        self._match = None
+        self._match: typing.Callable[[typing.Any], bool] | None = None
         self._rules = rules
         self._compile()
 
@@ -87,7 +87,7 @@ class Expression(BaseExpression):
     - a dict with a key which value can be either "AND" or "OR" and a list of expressions
     """
 
-    expression = None
+    expression: BaseExpression | None = None
 
     def _compile(self) -> None:
         if isinstance(self._rules, str):
