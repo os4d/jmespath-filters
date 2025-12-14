@@ -1,3 +1,0 @@
-# Filter
-
-See example usages

@@ -25,10 +25,19 @@ class BaseExpression(ABC):
     """Parent class for expressions."""
 
     def __init__(self, rules: Rules) -> None:
+        key = None
         if not rules:
-            raise ValueError("expression must be a non-empty string or dictionary")
-        if isinstance(rules, dict) and (list(rules.keys())) not in (["AND"], ["OR"], ["NOT"]):
-            raise ValueError("Rule dictionary may only contain one key for the following list: AND, OR, NOT")
+            raise ValueError("Expression must be a non-empty string or dictionary")
+        if isinstance(rules, dict):
+            if (key := list(rules.keys())[0]) not in ("AND", "OR", "NOT"):
+                raise ValueError(
+                    f"Rule dictionary may only contain one key for the following list: AND, OR, NOT. Found '{key}'"
+                )
+            else:
+                if key in ("AND", "OR") and len(rules[key]) < 2:
+                    raise ValueError(f"{key} needs at least 2 expressions")
+                elif key == 'NOT' and not isinstance(rules[key], str) and len(rules[key]) != 1:
+                    raise ValueError("NOT needs 1 expression only")
 
         self._match = None
         self._rules = rules

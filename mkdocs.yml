@@ -1,9 +1,9 @@
-copyright: Copyright &copy; 2025 KTech
+copyright: Copyright &copy; 2025 OS4D Ltd
 dev_addr: 127.0.0.1:8001
 docs_dir: docs/src
 edit_uri: 'blob/develop/docs/'
 repo_url: https://github.com/os4d/jmespath-filters
-site_author: KTech
+site_author: Giovanni Bronzini
 site_description: ""
 site_dir: ./~build/docs
 site_name: jmespath-filters

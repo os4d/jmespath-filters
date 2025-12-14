@@ -3,22 +3,6 @@ import pytest
 from jmespath_filters import Filter
 
 
-@pytest.fixture
-def payload():
-    return {
-        "people": [
-            {
-                "general": {"id": 100, "age": 20, "other": "foo", "name": "Bob"},
-                "history": {"first_login": "2014-01-01", "last_login": "2014-01-02"},
-            },
-            {
-                "general": {"id": 101, "age": 30, "other": "bar", "name": "Bill"},
-                "history": {"first_login": "2014-05-01", "last_login": "2014-05-02"},
-            },
-        ]
-    }
-
-
 @pytest.mark.parametrize(
     'pk, expected',
     [
@@ -27,7 +11,7 @@ def payload():
     ],
 )
 def test_simple_expression(pk, expected, payload):
-    jfilter = Filter(f"people[?general.id==`{pk}`].general | [0]")
+    jfilter = Filter(f"people[?general.id==`{pk}`]")
     assert jfilter.match(payload) is expected
 
 
@@ -39,7 +23,7 @@ def test_simple_expression(pk, expected, payload):
     ],
 )
 def test_not_expression(pk, expected, payload):
-    jfilter = Filter({'NOT': f"people[?general.id==`{pk}`].general | [0]"})
+    jfilter = Filter({'NOT': f"people[?general.id==`{pk}`]"})
     assert jfilter.match(payload) is expected
 
 
@@ -51,7 +35,7 @@ def test_not_expression(pk, expected, payload):
     ],
 )
 def test_or_expression(pk, expected, payload):
-    jfilter = Filter({'OR': [f"people[?general.id==`{pk}`].general | [0]", "people[?general.id==`888`].general | [0]"]})
+    jfilter = Filter({'OR': [f"people[?general.id==`{pk}`]", "people[?general.id==`888`]"]})
     assert jfilter.match(payload) is expected
 
 
@@ -66,8 +50,27 @@ def test_and_expression(pk, expected, payload):
     jfilter = Filter(
         {
             'AND': [
-                f"people[?general.id==`{pk}`].general | [0]",
-                "people[?history.first_login==`2014-05-01`].general | [0]",
+                f"people[?general.id==`{pk}`]",
+                "people[?history.first_login==`2014-05-01`]",
+            ]
+        }
+    )
+    assert jfilter.match(payload) is expected
+
+
+@pytest.mark.parametrize(
+    'age, expected',
+    [
+        pytest.param(30, False, id='no-match'),
+        pytest.param(50, True, id='match'),
+    ],
+)
+def test_composed_expression(age, expected, payload):
+    jfilter = Filter(
+        {
+            'AND': [
+                "people[?history.last_login==`2014-12-02`]",
+                {'NOT': f"people[?general.age==`{age}`]"},
             ]
         }
     )

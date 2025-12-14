@@ -56,6 +56,7 @@ documentation = [
   "mkdocs-simple-hooks>=0.1.5",
   "mkdocstrings[python]>=0.24.1",
   "pymdown-extensions>=10.7.1",
+  "click<8.3.0",  # Fix for https://github.com/mkdocs/mkdocs/issues/4032
 ]
 
 [tool.hatch.build.targets.sdist]
@@ -69,4 +70,4 @@ addopts = [
 ]
 
 [tool.uv]
-default-groups = [ "dev", "checks" ]
+default-groups = [ "dev", "checks", "documentation" ]
