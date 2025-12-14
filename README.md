@@ -9,7 +9,12 @@
 [![Pypi](https://badge.fury.io/py/jmespath-filters.svg)](https://badge.fury.io/py/jmespath-filters)
 [![coverage](https://codecov.io/github/os4d/jmespath-filters/coverage.svg?branch=develop)](https://codecov.io/github/os4d/jmespath-filters?branch=develop)
 
-KTCalendar is a library providing utility classes for country-specific holiday-aware calendars and dates.
+Jmespathh-filters is a library providing a filtering utility for JSON payloads.
+
+You can use it to evaluate a payload against an Expression and check if it is a match.
+
+The Expression is based on the [JMESPath query language for JSON](https://jmespath.org/).
+On the [JMESPath website](https://jmespath.org/) you can also find an interactive form for testing the syntax.
 
 
 ## Dependencies
