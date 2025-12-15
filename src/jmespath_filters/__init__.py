@@ -34,9 +34,9 @@ class BaseExpression(ABC):
                 raise ValueError(
                     f"Rule dictionary may only contain one key for the following list: AND, OR, NOT. Found '{key}'"
                 )
-            if key in ("AND", "OR") and len(rules[key]) < 2:
+            if key in ("AND", "OR") and len(rules[key]) < 2:  # type: ignore[index]
                 raise ValueError(f"{key} needs at least 2 expressions")
-            if key == 'NOT' and not isinstance(rules[key], str) and len(rules[key]) != 1:
+            if key == 'NOT' and not isinstance(rules[key], str) and len(rules[key]) != 1:  # type: ignore[index]
                 raise ValueError("NOT needs 1 expression only")
 
         self._match: typing.Callable[[typing.Any], bool] | None = None
