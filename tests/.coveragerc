@@ -6,6 +6,8 @@ relative_files = True
 # partial_branches =
 omit =
     **/~*/*
+    src/jmespath_filters/types.py
+    src/jmespath_filters/version.py
 disable_warnings =
     module-not-measured
 
