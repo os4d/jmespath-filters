@@ -12,5 +12,6 @@
 *.egg-info
 **/__pycache__
 **/*.pyc
+src/jmespath_filters/version.py
 
 coverage.xml

@@ -145,3 +145,4 @@ section-order = [
 "**/__init__.py" = ["D104"]
 "**/apps.py" = ["UP035"]
 "**/migrations/**" = ["D100", "D101", "E501"]
+"src/jmespath_filters/schema.py" = ["E501"]
